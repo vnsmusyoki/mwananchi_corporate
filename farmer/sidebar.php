@@ -28,9 +28,8 @@
                 </a>
                 <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded"> 
-                        <a class="collapse-item" href="assigned-deliveries.php">Assigned Deliveries</a> 
-                        <a class="collapse-item" href="index.php">Delivered Orders</a> 
-                        <a class="collapse-item" href="print.php">Generate Report</a>
+                        <a class="collapse-item" href="all-deliveries.php">All Deliveries</a> 
+                        
                     </div>
                 </div>
             </li>

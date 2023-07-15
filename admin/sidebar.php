@@ -19,22 +19,12 @@
                     <span>Dashboard</span></a>
             </li>
 
-            <!-- Divider -->
-            <hr class="sidebar-divider">
-
-            <!-- Heading -->
-            <div class="sidebar-heading">
-                Interface
-            </div>
-
-            <!-- Nav Item - Pages Collapse Menu -->
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="all-farmers.php" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
-                    <i class="fas fa-fw fa-cog"></i>
-                    <span>Farmers</span>
-                </a>
-
+            <li class="nav-item active">
+                <a class="nav-link" href="all-farmers.php">
+                <i class="fas fa-fw fa-cog"></i>
+                    <span>Farmers</span></a>
             </li>
+
 
             <!-- Nav Item - Utilities Collapse Menu -->
             <li class="nav-item">

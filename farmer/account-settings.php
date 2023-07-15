@@ -1,5 +1,5 @@
 <?php
-include 'customer-account.php';
+include 'farmer-account.php';
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -223,7 +223,7 @@ include 'customer-account.php';
             <footer class="sticky-footer bg-white">
                 <div class="container my-auto">
                     <div class="copyright text-center my-auto">
-                        <span>Copyright &copy; Laundry Website 2022</span>
+                        <span>Copyright &copy; Mwananchi Corporate 2023</span>
                     </div>
                 </div>
             </footer>

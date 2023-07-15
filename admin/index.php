@@ -78,69 +78,67 @@ include 'admin-account.php';
 
                     <div class="row">
                         <div class="col-lg-12">
-                            <h2 class="title-1 m-b-25">New  Orders</h2> 
+                            <h2 class="title-1 m-b-25">Unpaid Milk Records</h2> 
                             <div class="table-responsive table--no-card m-b-40" style="background-color: #fff;padding:1rem .4rem;">
                             <table class="table table-bordered" id="example">
                                     <thead>
                                         <tr>
-                                            <th>Customer</th>
-                                            <th>Order Ref</th>
-                                            <th>Date Placed</th>
-                                            <th>Item Ordered </th>
-                                            <th>Total Amount </th>
-                                            <th>Pick Station</th>
-                                            <th>Trans Code</th>  
-
+                                            <th>Farmer</th>
+                                            <th>Date Received</th>
+                                            <th>Total Litres</th>
+                                            <th>Amount </th>
+                                            <th>Paid </th>
+                                            <th>Balance </th>
+                                            <th>Payment </th>
+                                            <th class="text-right">Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <?php
                                         include 'db-connection.php';
+                                        $data = "SELECT * FROM milk_delivery WHERE pay_status='unpaid'" ;
 
-                                        $data = "SELECT * FROM `customer_order` WHERE `order_status`='pending'";
                                         $query = mysqli_query($conn, $data);
-                                   $totalorders = mysqli_num_rows($query);
-                                        while ($fetch = mysqli_fetch_assoc($query)) {
-                                            $customerid = $fetch['order_customer_id'];
-                                            $orderid = $fetch['order_id'];
-                                            $orderref = $fetch['order_ref'];
-                                            $orderdate = $fetch['order_date'];
-                                            $ordertown = $fetch['order_delivery_required'];
-                                            $itemdata = "SELECT * FROM `customer_order_items` WHERE `item_order_id`='$orderid'";
-                                            $queryitemdata = mysqli_query($conn, $itemdata);
-                                            while ($queryfetch = mysqli_fetch_assoc($queryitemdata)) {
-                                        $comments = $queryfetch['item_comments'];
-                                            }
-                                            $customerdata = "SELECT * FROM `customer` WHERE `customer_id`='$customerid'";
-                                            $querycustomerdata= mysqli_query($conn, $customerdata);
-                                            while ($queryfcustomerdatafetch = mysqli_fetch_assoc($querycustomerdata)) {
-                                                $customerprofile = $queryfcustomerdatafetch['customer_name'];
-                                            }
-                                            $paydata = "SELECT * FROM `payment` WHERE `payment_order_id`='$orderid'";
-                                            $querypay = mysqli_query($conn, $paydata);
-                                            while ($queryfetch = mysqli_fetch_assoc($querypay)) {
-                                                $payment = $queryfetch['payment_amount'];
-                                                $paycode = $queryfetch['payment_ref'];
 
-                                                echo "
-                                                <tr>
-                                                <td>$customerprofile</td>
-                                                <td>$orderref</td>
-                                                <td>$orderdate</td>
-                                                <td>$comments</td> 
-                                                 <td>KES $payment</td> 
-                                                 <td>$ordertown</td> 
-                                                 <td class='text-uppercase'>$paycode</td> 
- 
-                                            </tr>
-                                                ";
+                                        while ($fetch = mysqli_fetch_assoc($query)) {
+                                            $id = $fetch['milk_delivery_id'];
+                                            $farmerid = $fetch['milk_delivery_farmer_id'];
+                                            $quantity = $fetch['milk_delivery_quantity'];
+                                            $quality = $fetch['milk_delivery_quality'];
+                                            $date = $fetch['milk_delivery_date'];
+                                            $status = $fetch['pay_status'];
+
+                                            $farmer = "SELECT * FROM farmers WHERE farmer_id = $farmerid";
+                                            $quertfarmer = mysqli_query($conn, $farmer);
+                                            while($fetchfarmer = mysqli_fetch_assoc($quertfarmer)) {
+                                                $farmername = $fetchfarmer['farmer_name'];
                                             }
+                                            $payments = "SELECT * FROM payments WHERE payments_delivery_id = $id";
+                                            $quertpayments = mysqli_query($conn, $payments);
+                                            while($fetchpayments = mysqli_fetch_assoc($quertpayments)) {
+                                                $totalamount = $fetchpayments['payments_amount'] ?? 0;
+                                                $totalbalance = $fetchpayments['payments_balance'] ?? 0;
+                                                $totalpaid = $totalamount - $totalbalance;
+                                            }
+                                            echo "
+                                                <tr>
+                                                    <td>$farmername</td>
+                                                    <td>$date</td>
+                                                    <td>$quantity</td>
+                                                    <td>Ksh. $totalamount </td> 
+                                                    <td>Ksh. $totalpaid </td> 
+                                                    <td>Ksh. $totalbalance </td>  
+                                                    <td>$status</td>  
+                                                    <td><a href='make_payment.php?id=$id' class='btn btn-primary btn-block'>Pay Now</td>
+                                                </tr>
+                                            ";
                                         }
+
+                                        mysqli_close($conn);
                                         ?>
 
                                     </tbody>
                                 </table>
-                            </div>
                         </div>
 
                     </div>
@@ -155,7 +153,7 @@ include 'admin-account.php';
             <footer class="sticky-footer bg-white">
                 <div class="container my-auto">
                     <div class="copyright text-center my-auto">
-                        <span>Copyright &copy; Laundry Website 2022</span>
+                        <span>Copyright &copy; Mwananchi Corporate 2023</span>
                     </div>
                 </div>
             </footer>

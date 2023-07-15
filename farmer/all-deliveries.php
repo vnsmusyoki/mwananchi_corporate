@@ -1,5 +1,5 @@
 <?php
-include 'admin-account.php';
+include 'farmer-account.php';
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -78,8 +78,7 @@ include 'admin-account.php';
                     <div class="row">
                         <div class="col-lg-12">
                             <div class="d-flex justify-content-between">
-                                <h2 class="title-1 m-b-25">All Milk Supplies</h2>
-                                <a href="create-milk-record.php" class="btn btn-primary">Create Record</a>
+                                <h2 class="title-1 m-b-25">All My Milk Records</h2> 
                             </div>
                             <div class="table-responsive table--no-card m-b-40" style="background-color: #fff;padding:1rem .4rem;">
                                 <table class="table table-bordered" id="example">
@@ -98,7 +97,7 @@ include 'admin-account.php';
                                     <tbody>
                                         <?php
                                         include 'db-connection.php';
-                                        $data = "SELECT * FROM milk_delivery";
+                                        $data = "SELECT * FROM milk_delivery WHERE milk_delivery_farmer_id='$memberid' ";
 
                                         $query = mysqli_query($conn, $data);
 
