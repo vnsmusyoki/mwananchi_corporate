@@ -12,7 +12,7 @@ include 'admin-account.php';
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>All Farmer Vaccination Schedules</title>
+    <title>All Milk Deliveries</title>
 
     <!-- Custom fonts for this template-->
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -79,51 +79,66 @@ include 'admin-account.php';
                         <div class="col-lg-12">
                             <div class="d-flex justify-content-between">
                                 <h2 class="title-1 m-b-25">All Vaccination Schedules</h2>
-                                <a href="create-vaccination.php" class="btn btn-primary">Add Vaccination Schedule</a>
+                                <a href="create-milk-record.php" class="btn btn-primary">Create Record</a>
                             </div>
                             <div class="table-responsive table--no-card m-b-40" style="background-color: #fff;padding:1rem .4rem;">
                                 <table class="table table-bordered" id="example">
                                     <thead>
                                         <tr>
-                                            <th>Officer</th>
-                                            <th>Phone Number</th>
-                                            <th>Date Scheduled</th>
-                                            <th>Description </th>
-                                            <th>Farm Location </th>
-                                            <th class="text-right">Edit</th>
-                                            <th class="text-right">Delete</th>
+                                            <th>Farmer</th>
+                                            <th>Date Received</th>
+                                            <th>Total Litres</th>
+                                            <th>Amount </th>
+                                            <th>Paid </th>
+                                            <th>Balance </th>
+                                            <th>Payment </th>
+                                            <th class="text-right">Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <?php
                                         include 'db-connection.php';
-                                        $data = "SELECT ai.vaccination_id, ai.vaccination_date, ai.vaccination_details, vo.veterinary_officers_officer_name, vo.veterinary_officers_contact_number, fl.farmer_locations_latitude, fl.farmer_locations_longitude
-                                        FROM vaccination ai
-                                        JOIN veterinary_officers vo ON ai.vaccination_officer_id = vo.veterinary_officers_id
-                                        JOIN farmer_locations fl ON ai.vaccination_location_id = fl.farmer_locations_id";
+                                        $data = "SELECT * FROM milk_delivery";
+
                                         $query = mysqli_query($conn, $data);
+
                                         while ($fetch = mysqli_fetch_assoc($query)) {
-                                            $id = $fetch['vaccination_id'];
-                                            $officername = $fetch['veterinary_officers_officer_name'];
-                                            $officercontact = $fetch['veterinary_officers_contact_number'];
-                                            $datescheduled = $fetch['vaccination_date'];
-                                            $description = $fetch['vaccination_details'];
-                                            $locationlatitude = $fetch['farmer_locations_latitude'];
-                                            $locationlongitude = $fetch['farmer_locations_longitude'];
+                                            $id = $fetch['milk_delivery_id'];
+                                            $farmerid = $fetch['milk_delivery_farmer_id'];
+                                            $quantity = $fetch['milk_delivery_quantity'];
+                                            $quality = $fetch['milk_delivery_quality'];
+                                            $date = $fetch['milk_delivery_date'];
+                                            $status = $fetch['pay_status'];
+
+                                            $farmer = "SELECT * FROM farmers WHERE farmer_id = $farmerid";
+                                            $quertfarmer = mysqli_query($conn, $farmer);
+                                            while($fetchfarmer = mysqli_fetch_assoc($quertfarmer)) {
+                                                $farmername = $fetchfarmer['farmer_name'];
+                                            }
+                                            $payments = "SELECT * FROM payments WHERE payments_delivery_id = $id";
+                                            $quertpayments = mysqli_query($conn, $payments);
+                                            while($fetchpayments = mysqli_fetch_assoc($quertpayments)) {
+                                                $totalamount = $fetchpayments['payments_amount'] ?? 0;
+                                                $totalbalance = $fetchpayments['payments_balance'] ?? 0;
+                                                $totalpaid = $totalamount - $totalbalance;
+                                            }
                                             echo "
-                                                    <tr>
-                                                        <td>$officername</td>
-                                                        <td>$officercontact</td>
-                                                        <td>$datescheduled</td> 
-                                                        <td>$description</td> 
-                                                        <td>($locationlatitude, $locationlongitude)</td> 
-                                                        <td><a href='edit_vaccination_record.php?id=$id' class='btn btn-primary btn-block'>Edit</td>
-                                                        <td><a href='delete_vaccination_record.php?id=$id' class='btn btn-danger btn-block'>Delete</td>
-                                                    </tr>
-                                                ";
+                                                <tr>
+                                                    <td>$farmername</td>
+                                                    <td>$date</td>
+                                                    <td>$quantity</td>
+                                                    <td>Ksh. $totalamount </td> 
+                                                    <td>Ksh. $totalpaid </td> 
+                                                    <td>Ksh. $totalbalance </td>  
+                                                    <td>$status</td>  
+                                                    <td><a href='make_payment.php?id=$id' class='btn btn-primary btn-block'>Pay Now</td>
+                                                </tr>
+                                            ";
                                         }
+
                                         mysqli_close($conn);
                                         ?>
+
                                     </tbody>
                                 </table>
                             </div>

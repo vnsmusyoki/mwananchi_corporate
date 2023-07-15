@@ -84,6 +84,29 @@
                     </div>
                 </div>
             </li>
+            <!-- Nav Item - Pages Collapse Menu -->
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePagestwocomm" aria-expanded="true" aria-controls="collapsePagestwocomm">
+                    <i class="fas fa-fw fa-folder"></i>
+                    <span>Messages</span>
+                </a>
+                <div id="collapsePagestwocomm" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <a class="collapse-item" href="all-messages.php">All Messages</a>
+                    </div>
+                </div>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePagestwodel" aria-expanded="true" aria-controls="collapsePagestwodel">
+                    <i class="fas fa-fw fa-folder"></i>
+                    <span>Milk Deliveries</span>
+                </a>
+                <div id="collapsePagestwodel" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <a class="collapse-item" href="all-deliveries.php">All Deliveries</a>
+                    </div>
+                </div>
+            </li>
 
             <!-- Nav Item - Charts -->
             <li class="nav-item">

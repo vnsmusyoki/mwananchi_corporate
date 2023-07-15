@@ -12,7 +12,7 @@ include 'admin-account.php';
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>All Farmer Vaccination Schedules</title>
+    <title>All Notifications</title>
 
     <!-- Custom fonts for this template-->
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -79,51 +79,53 @@ include 'admin-account.php';
                         <div class="col-lg-12">
                             <div class="d-flex justify-content-between">
                                 <h2 class="title-1 m-b-25">All Vaccination Schedules</h2>
-                                <a href="create-vaccination.php" class="btn btn-primary">Add Vaccination Schedule</a>
+                                <a href="create-message.php" class="btn btn-primary">Send Message</a>
                             </div>
                             <div class="table-responsive table--no-card m-b-40" style="background-color: #fff;padding:1rem .4rem;">
                                 <table class="table table-bordered" id="example">
                                     <thead>
                                         <tr>
-                                            <th>Officer</th>
-                                            <th>Phone Number</th>
-                                            <th>Date Scheduled</th>
-                                            <th>Description </th>
-                                            <th>Farm Location </th>
-                                            <th class="text-right">Edit</th>
-                                            <th class="text-right">Delete</th>
+                                            <th>Sender</th>
+                                            <th>Receiver</th>
+                                            <th>Message</th>
+                                            <th>Date Sent </th>
+                                            <th>Message Status </th>
+                                            <th class="text-right">Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <?php
                                         include 'db-connection.php';
-                                        $data = "SELECT ai.vaccination_id, ai.vaccination_date, ai.vaccination_details, vo.veterinary_officers_officer_name, vo.veterinary_officers_contact_number, fl.farmer_locations_latitude, fl.farmer_locations_longitude
-                                        FROM vaccination ai
-                                        JOIN veterinary_officers vo ON ai.vaccination_officer_id = vo.veterinary_officers_id
-                                        JOIN farmer_locations fl ON ai.vaccination_location_id = fl.farmer_locations_id";
+                                        $data = "SELECT c.communication_id, c.communication_sender_id, c.communication_receiver_id, c.communication_receiver_content, c.communication_send_date, c.communication_status, a.admin_full_name, f.farmer_name
+                                            FROM communication c
+                                            LEFT JOIN admin a ON c.communication_sender_id = a.admin_id
+                                            LEFT JOIN farmers f ON c.communication_receiver_id = f.farmer_id";
+
                                         $query = mysqli_query($conn, $data);
+
                                         while ($fetch = mysqli_fetch_assoc($query)) {
-                                            $id = $fetch['vaccination_id'];
-                                            $officername = $fetch['veterinary_officers_officer_name'];
-                                            $officercontact = $fetch['veterinary_officers_contact_number'];
-                                            $datescheduled = $fetch['vaccination_date'];
-                                            $description = $fetch['vaccination_details'];
-                                            $locationlatitude = $fetch['farmer_locations_latitude'];
-                                            $locationlongitude = $fetch['farmer_locations_longitude'];
+                                            $id = $fetch['communication_id'];
+                                            $sendername = $fetch['admin_full_name'];
+                                            $receivername = $fetch['farmer_name'];
+                                            $message = $fetch['communication_receiver_content'];
+                                            $date = $fetch['communication_send_date'];
+                                            $status = $fetch['communication_status'];
+
                                             echo "
-                                                    <tr>
-                                                        <td>$officername</td>
-                                                        <td>$officercontact</td>
-                                                        <td>$datescheduled</td> 
-                                                        <td>$description</td> 
-                                                        <td>($locationlatitude, $locationlongitude)</td> 
-                                                        <td><a href='edit_vaccination_record.php?id=$id' class='btn btn-primary btn-block'>Edit</td>
-                                                        <td><a href='delete_vaccination_record.php?id=$id' class='btn btn-danger btn-block'>Delete</td>
-                                                    </tr>
-                                                ";
+                                                <tr>
+                                                    <td>$sendername</td>
+                                                    <td>$receivername</td>
+                                                    <td>$message</td> 
+                                                    <td>$date</td>  
+                                                    <td>$status</td>  
+                                                    <td><a href='mark_message_read.php?id=$id' class='btn btn-primary btn-block'>Edit</td>
+                                                </tr>
+                                            ";
                                         }
+
                                         mysqli_close($conn);
                                         ?>
+
                                     </tbody>
                                 </table>
                             </div>
