@@ -1,4 +1,4 @@
-<?php $user_name = $farmer_location = $user_email = $user_mobile_no = $login_username = $login_password = $confirmpwd = '' ?>
+<?php $user_name = $farmer_location = $user_email = $user_mobile_no = $login_username = $login_password = $confirmpwd = ''; ?>
 <!DOCTYPE html>
 <html>
 
