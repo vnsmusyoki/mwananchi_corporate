@@ -76,11 +76,11 @@
             <li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePagestwo" aria-expanded="true" aria-controls="collapsePagestwo">
                     <i class="fas fa-fw fa-folder"></i>
-                    <span>Delivery</span>
+                    <span>Vaccination Schedules</span>
                 </a>
                 <div id="collapsePagestwo" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <a class="collapse-item" href="all-deliveries.php">All Deliveries</a>
+                        <a class="collapse-item" href="all-vaccinations.php">All Vaccinations</a>
                     </div>
                 </div>
             </li>

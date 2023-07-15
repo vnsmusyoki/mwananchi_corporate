@@ -1,5 +1,10 @@
 <?php
+$date_scheduled = $insemination_details =  $msg = '';
+?>
+<?php
+
 include 'admin-account.php';
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -12,14 +17,16 @@ include 'admin-account.php';
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Secure Account- Account Settings</title>
+    <title>Create Vaccination Schedule</title>
 
     <!-- Custom fonts for this template-->
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
 
     <!-- Custom styles for this template-->
-    <link href="css/sb-admin-2.min.css" rel="stylesheet">
+    <link href="css/sb-admin-2.css" rel="stylesheet">
+    <link href="css/custom.css" rel="stylesheet">
+
 </head>
 
 <body id="page-top">
@@ -78,25 +85,9 @@ include 'admin-account.php';
                             </div>
                         </li>
 
-                        <!-- Nav Item - Alerts -->
-                        <li class="nav-item dropdown no-arrow mx-1">
-                            <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <i class="fas fa-bell fa-fw"></i>
-                                <!-- Counter - Alerts -->
-                                <span class="badge badge-danger badge-counter"></span>
-                            </a>
 
-                        </li>
 
                         <!-- Nav Item - Messages -->
-                        <li class="nav-item dropdown no-arrow mx-1">
-                            <a class="nav-link dropdown-toggle" href="#" id="messagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <i class="fas fa-envelope fa-fw"></i>
-                                <!-- Counter - Messages -->
-                                <span class="badge badge-danger badge-counter"></span>
-                            </a>
-
-                        </li>
 
                         <div class="topbar-divider d-none d-sm-block"></div>
 
@@ -108,20 +99,9 @@ include 'admin-account.php';
                             </a>
                             <!-- Dropdown - User Information -->
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
-                                <a class="dropdown-item" href="#">
-                                    <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Profile
-                                </a>
-                                <a class="dropdown-item" href="account-setitngs.php">
-                                    <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Settings
-                                </a>
-                                <a class="dropdown-item" href="#">
-                                    <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Activity Log
-                                </a>
+
                                 <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
+                                <a class="dropdown-item" href="logout.php">
                                     <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
                                     Logout
                                 </a>
@@ -136,81 +116,114 @@ include 'admin-account.php';
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
 
-                    <!-- Page Heading -->
-                    <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                        <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
-                        <a href="print.php" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-download fa-sm text-white-50"></i> Generate Report</a>
-                    </div>
-
-                    <!-- Content Row -->
-                    <div class="row">
-
-
-
-                    </div>
-
                     <div class="row">
                         <div class="col-lg-1 col-md-1 col-xs-12 col-sm-12"></div>
                         <div class="col-lg-10 col-md-10 col-xs-12 col-sm-12" style="background-color: white;padding:20px;">
+                            <?php
 
-                            <form action="" method="POST">
-                                <center><span>Account Settings</span></center>
-                                <hr>
 
-                                <div class="form-group row">
-                                    <label for="inputEmail3" class="col-sm-2 col-form-label">New Password</label>
-                                    <div class="col-sm-10">
-                                        <input type="password" class="form-control" id="inputEmail3" name="password" value="">
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label for="inputEmail3" class="col-sm-2 col-form-label">Confirm New Password</label>
-                                    <div class="col-sm-10">
-                                        <input type="password" class="form-control" id="inputEmail3" name="confirm_password" value="">
-                                    </div>
-                                </div>
+                            if (isset($_POST['register_btn'])) {
+                                include 'db-connection.php';
+                                $farmid = $_POST['farm_id'];
+                                $officerid = $_POST['officer_id'];
+                                $date = mysqli_real_escape_string($conn, $_POST['date_scheduled']);
+                                $details = mysqli_real_escape_string($conn, $_POST['insemination_details']);
 
-                                <div class="form-group row">
-                                    <label for="inputEmail3" class="col-sm-2 col-form-label"></label>
-                                    <div class="col-sm-10">
-                                        <button type="submit" class="btn btn-primary btn-block text-light" name="registeruser">Update Password</button>
-                                    </div>
-                                </div>
-                                <?php
+                                if (empty($farmid) || empty($date) || empty($details) || empty($officerid)) {
+                                    $msg = "Provide all the details";
+                                } else {
 
-                                ini_set('display_errors', 1);
-                                ini_set('display_startup_errors', 1);
-                                error_reporting(E_ALL);
-                                if (isset($_POST['registeruser'])) {
-                                    include 'db-connection.php';
-                                    $password  = mysqli_real_escape_string($conn, $_POST['password']);
-                                    $cpassword  = mysqli_real_escape_string($conn, $_POST['confirm_password']);
-                                    $passlength = strlen($password);
+                                    // Insert data into farmer_locations table
+                                    $insert_location = "INSERT INTO vaccination (vaccination_officer_id, vaccination_location_id, vaccination_date,vaccination_details) VALUES ('$officerid','$farmid', '$date', '$details')";
+                                    $query_insert_location = mysqli_query($conn, $insert_location);
 
-                                    if (empty($password) || empty($cpassword)) {
-                                        echo "<script>alert('Provide all the details');</script>";
-                                    } else if ($password !== $cpassword) {
-                                        echo "<script>alert('provide matching password');</script>";
-                                    } else if ($passlength < 4) {
-                                        echo "<script>alert('Password must have more than 4  digits or characters');</script>";
+                                    if ($query_insert_location) {
+                                        // Success message or redirect to desired page
+                                        echo "<script>alert('Vaccination Schedule added successfully');</script>";
+                                        echo "<script>window.location.replace('all-vaccinations.php');</script>";
                                     } else {
-                                        $password = md5($password);
-                                        $email = $_SESSION['customer'];
-                                        $insertlogin = "UPDATE `login` SET `login_password`='$password' WHERE `login_username`='$email'";
-                                        $querylogin = mysqli_query($conn, $insertlogin);
-
-                                        if ($querylogin) {
-                                            echo "<script>window.location.replace('index.php');</script>";
-                                        } else {
-                                            echo "<script>alert('An error occurred ');</script>";
-                                        }
+                                        $msg = "Failed to schedule vaccinations";
                                     }
                                 }
+                            }
+
+                            ?>
+                            <form action="" method="POST" autocomplete="off">
+                                <center><span>Add Vaccination Schedle </span></center>
+                                <hr>
+                                <?php
+
+
+                                if (!empty($msg)) {
                                 ?>
+
+                                    <div class="alert alert-danger" role="alert">
+                                        <?php echo $msg; ?>
+                                    </div>
+                                <?php
+                                }
+
+                                ?>
+                                <div class="form-group">
+                                    <label>Select Farm Location</label>
+                                    <select name="farm_id" class="form-control" id="">
+                                        <option value="">click to select Farm</option>
+
+                                        <?php
+                                        $farmers = "SELECT * FROM `farmer_locations`";
+                                        $queryfarmers = mysqli_query($conn, $farmers);
+                                        while ($fetch = mysqli_fetch_assoc($queryfarmers)) {
+                                            $latitude = $fetch['farmer_locations_longitude'];
+                                            $longitude = $fetch['farmer_locations_latitude'];
+                                            $farmerid = $fetch['farmer_locations_id'];
+                                        ?>
+                                            <option value="<?php echo $farmerid; ?>">Location: - <?php echo $latitude . ',' . $longitude; ?></option>
+                                        <?php
+                                        }
+                                        ?>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Select Farm Location</label>
+                                    <select name="officer_id" class="form-control" id="">
+                                        <option value="">click to Veterinary Officer</option>
+
+                                        <?php
+                                        $farmers = "SELECT * FROM `veterinary_officers`";
+                                        $queryfarmers = mysqli_query($conn, $farmers);
+                                        while ($fetch = mysqli_fetch_assoc($queryfarmers)) {
+                                            $name = $fetch['veterinary_officers_officer_name'];
+                                            $phonenumber = $fetch['veterinary_officers_contact_number'];
+                                            $farmerid = $fetch['veterinary_officers_id'];
+                                        ?>
+                                            <option value="<?php echo $farmerid; ?>">Officer Selected: - <?php echo $name . ',' . $phonenumber; ?></option>
+                                        <?php
+                                        }
+                                        ?>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Date Scheduled</label>
+                                    <input type="datetime-local" name="date_scheduled" value="<?php echo isset($_POST['date_scheduled']) ? htmlspecialchars($_POST['date_scheduled']) : ''; ?>" class="form-control">
+
+                                </div>
+                                <div class="form-group">
+                                    <label>Insemination Details</label>
+                                    <input type="text" name="insemination_details" value="<?php echo isset($_POST['insemination_details']) ? htmlspecialchars($_POST['insemination_details']) : ''; ?>" class="form-control">
+
+
+
+                                </div>
+                                <div class="form-group">
+                                    <button type="submit" class="btn btn-block btn-primary" name="register_btn">Schedule Vaccination </button>
+                                </div>
+
+
                             </form>
                         </div>
                         <div class="col-lg-1 col-md-1 col-xs-12 col-sm-12"></div>
                     </div>
+
 
                 </div>
                 <!-- /.container-fluid -->
@@ -222,7 +235,7 @@ include 'admin-account.php';
             <footer class="sticky-footer bg-white">
                 <div class="container my-auto">
                     <div class="copyright text-center my-auto">
-                        <span>Copyright &copy; Laundry Website 2022</span>
+                        <span>Copyright &copy; Mwananchi Corporate 2023</span>
                     </div>
                 </div>
             </footer>
@@ -238,6 +251,7 @@ include 'admin-account.php';
     <a class="scroll-to-top rounded" href="#page-top">
         <i class="fas fa-angle-up"></i>
     </a>
+
 
 
     <!-- Bootstrap core JavaScript-->
@@ -256,16 +270,7 @@ include 'admin-account.php';
     <!-- Page level custom scripts -->
     <script src="js/demo/chart-area-demo.js"></script>
     <script src="js/demo/chart-pie-demo.js"></script>
+
 </body>
-<script>
-    $(document).ready(function() {
-        $('#example').DataTable({
-            dom: 'Bfrtip',
-            buttons: [
-                'print'
-            ]
-        });
-    });
-</script>
 
 </html>

@@ -12,7 +12,7 @@ include 'admin-account.php';
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>All Farmer Artificial Inserminations</title>
+    <title>All Farmer Vaccination Schedules</title>
 
     <!-- Custom fonts for this template-->
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -75,20 +75,16 @@ include 'admin-account.php';
 
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
-
-
                     <div class="row">
                         <div class="col-lg-12">
                             <div class="d-flex justify-content-between">
-                                <h2 class="title-1 m-b-25">All Farmers Artificial Insemination Requests</h2>
-                                <a href="create-farmer-insemination.php" class="btn btn-primary">Add New Farm Location</a>
+                                <h2 class="title-1 m-b-25">All Vaccination Schedules</h2>
+                                <a href="create-vaccination.php" class="btn btn-primary">Add Vaccination Schedule</a>
                             </div>
-
                             <div class="table-responsive table--no-card m-b-40" style="background-color: #fff;padding:1rem .4rem;">
                                 <table class="table table-bordered" id="example">
                                     <thead>
                                         <tr>
-
                                             <th>Officer</th>
                                             <th>Phone Number</th>
                                             <th>Date Scheduled</th>
@@ -96,29 +92,24 @@ include 'admin-account.php';
                                             <th>Farm Location </th>
                                             <th class="text-right">Edit</th>
                                             <th class="text-right">Delete</th>
-
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <?php
                                         include 'db-connection.php';
-
-                                        $data = "SELECT ai.artificial_insemination_id, ai.artificial_insemination_date, ai.artificial_insemination_details, vo.veterinary_officers_officer_name, vo.veterinary_officers_contact_number, fl.farmer_locations_latitude, fl.farmer_locations_longitude
-                                        FROM artificial_insemination ai
-                                        JOIN veterinary_officers vo ON ai.artificial_insemination_officer_id = vo.veterinary_officers_id
-                                        JOIN farmer_locations fl ON ai.artificial_insemination_location_id = fl.farmer_locations_id";
-
+                                        $data = "SELECT ai.vaccination_id, ai.vaccination_date, ai.vaccination_details, vo.veterinary_officers_officer_name, vo.veterinary_officers_contact_number, fl.farmer_locations_latitude, fl.farmer_locations_longitude
+                                        FROM vaccination ai
+                                        JOIN veterinary_officers vo ON ai.vaccination_officer_id = vo.veterinary_officers_id
+                                        JOIN farmer_locations fl ON ai.vaccination_location_id = fl.farmer_locations_id";
                                         $query = mysqli_query($conn, $data);
-
                                         while ($fetch = mysqli_fetch_assoc($query)) {
-                                            $id = $fetch['artificial_insemination_id'];
+                                            $id = $fetch['vaccination_id'];
                                             $officername = $fetch['veterinary_officers_officer_name'];
                                             $officercontact = $fetch['veterinary_officers_contact_number'];
-                                            $datescheduled = $fetch['artificial_insemination_date'];
-                                            $description = $fetch['artificial_insemination_details'];
+                                            $datescheduled = $fetch['vaccination_date'];
+                                            $description = $fetch['vaccination_details'];
                                             $locationlatitude = $fetch['farmer_locations_latitude'];
                                             $locationlongitude = $fetch['farmer_locations_longitude'];
-
                                             echo "
                                                     <tr>
                                                         <td>$officername</td>
@@ -126,17 +117,13 @@ include 'admin-account.php';
                                                         <td>$datescheduled</td> 
                                                         <td>$description</td> 
                                                         <td>($locationlatitude, $locationlongitude)</td> 
-                                                        <td><a href='edit_insemination_record.php?id=$id' class='btn btn-primary btn-block'>Edit</td>
+                                                        <td><a href='edit_vaccination_record.php?id=$id' class='btn btn-primary btn-block'>Edit</td>
                                                         <td><a href='delete_insemination_record.php?id=$id' class='btn btn-danger btn-block'>Delete</td>
                                                     </tr>
                                                 ";
                                         }
-
                                         mysqli_close($conn);
                                         ?>
-
-
-
                                     </tbody>
                                 </table>
                             </div>
