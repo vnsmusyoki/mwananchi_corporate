@@ -33,19 +33,20 @@
                     <i class="fas fa-fw fa-cog"></i>
                     <span>Farmers</span>
                 </a>
-                
+
             </li>
 
             <!-- Nav Item - Utilities Collapse Menu -->
             <li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities" aria-expanded="true" aria-controls="collapseUtilities">
                     <i class="fas fa-fw fa-wrench"></i>
-                    <span>Employees</span>
+                    <span>Farmer Locations</span>
                 </a>
                 <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <a class="collapse-item" href="all-employees.php">All Employees</a> 
-                        <a class="collapse-item" href="print-employees.php">Generate Report</a> 
+                        <a class="collapse-item" href="all-locations.php">All Locations</a>
+                        <a class="collapse-item" href="create-farmer-location.php.php">Add Location</a>
+                        <a class="collapse-item" href="print-locations.php">Generate Report</a>
                     </div>
                 </div>
             </li>
@@ -62,11 +63,11 @@
             <li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages" aria-expanded="true" aria-controls="collapsePages">
                     <i class="fas fa-fw fa-folder"></i>
-                    <span>Orders</span>
+                    <span>A. Inseminations</span>
                 </a>
                 <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <a class="collapse-item" href="all-orders.php">All Orders</a>
+                        <a class="collapse-item" href="all-a-inseminations.php">All Requests</a>
 
                     </div>
                 </div>
@@ -86,9 +87,9 @@
 
             <!-- Nav Item - Charts -->
             <li class="nav-item">
-                <a class="nav-link" href="create-service.php">
+                <a class="nav-link" href="all-veterinary-officers.php">
                     <i class="fas fa-fw fa-chart-area"></i>
-                    <span>Services</span></a>
+                    <span>Veterinary Officers</span></a>
             </li>
 
             <!-- Nav Item - Tables -->

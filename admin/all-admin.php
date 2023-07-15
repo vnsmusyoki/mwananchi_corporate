@@ -12,7 +12,7 @@ include 'admin-account.php';
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Laundry Admin - All Orders</title>
+    <title>Admin Accounts</title>
 
     <!-- Custom fonts for this template-->
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -162,6 +162,7 @@ include 'admin-account.php';
                                             <th>Admin Name</th>
                                             <th>EMail Address</th>
                                             <th>Phone Number</th> 
+                                            <th>Residence</th> 
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -173,9 +174,10 @@ include 'admin-account.php';
                                         $totalorders = mysqli_num_rows($query);
                                         while ($fetch = mysqli_fetch_assoc($query)) {
                                             $id = $fetch['admin_id'];
-                                            $names = $fetch['admin_name'];
-                                            $email = $fetch['admin_email'];
-                                            $phonenumber = $fetch['admin_phone_no'];
+                                            $names = $fetch['admin_full_name'];
+                                            $email = $fetch['admin_email_address'];
+                                            $phonenumber = $fetch['admin_phone_number'];
+                                            $residence = $fetch['admin_residence'];
 
                                             echo "
                                                 <tr>
@@ -183,6 +185,7 @@ include 'admin-account.php';
                                                     <td>$names</td>
                                                     <td>$email</td> 
                                                     <td>$phonenumber</td>  
+                                                    <td>$residence</td>  
                                                 </tr>
                                             ";
                                         }
